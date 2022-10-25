@@ -2,26 +2,58 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
 
+    [SerializeField] float rotationSpeed = 5f;
+    [SerializeField] float rotationDgree = 20;
+    int CurrentMoveDirection = 1;
+    Rotation rotation;
+
+    void Awake()
+    {
+        rotation = GetComponent<Rotation>();
+      
     }
 
-    // Update is called once per frame
-    void Update()
+    // horizontal movement of the player with body rotaion while moving 
+    public void HorizontalMovement(float direction, float speed)
     {
-        float x = Input.GetAxis("Horizontal");
+        if (direction > 0)
+        {
+            
+            MoveLeftAndRight(direction, speed , CurrentMoveDirection);
 
-        if (x > 0)
+            rotation.RotatePlayerBodyByDgree(rotationDgree, rotationSpeed);
+        }
+        else if (direction < 0)
         {
-            transform.position += new Vector3(x * Time.deltaTime,0,0);
-        }else if(x < 0)
-        {
-            transform.position += new Vector3(x * Time.deltaTime, 0, 0);
+            MoveLeftAndRight(direction, speed , CurrentMoveDirection);
+
+            rotation.RotatePlayerBodyByDgree(-rotationDgree, rotationSpeed);
         }
 
+       // reset rotation after moving
+       rotation.ResetPlayerRotation(10);
     }
 
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        // reset rotation if get hit by platform
+        transform.rotation = rotation.SetRotation();
+    }
+
+    // flip player movement right with left
+    public void FlipMovement()
+    {
+         CurrentMoveDirection *= -1;
+       
+    }
+
+    // moving the character Horizontal movement 
+    public void MoveLeftAndRight(float Direction, float speed , int flipMove)
+    {
+        transform.position += new Vector3(Direction * Time.deltaTime * speed * flipMove, 0, 0);
+    }
 
 }
