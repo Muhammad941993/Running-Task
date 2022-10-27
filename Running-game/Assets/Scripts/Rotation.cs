@@ -4,9 +4,12 @@ using System.Collections;
 public class Rotation : MonoBehaviour
 {
     float lerpDuration = .5f;
-
-
-    // rotate the player body in z direction whilw moving
+    //GameObject player;
+   
+    public int flipNumber = 0;
+   
+  
+    
     public void RotatePlayerBodyByDgree(float Dgree , float rotationSpeed)
     {
         Quaternion target = Quaternion.Euler(0, 0, Dgree);
@@ -18,7 +21,7 @@ public class Rotation : MonoBehaviour
     public void ResetPlayerRotation(float speed)
     {
         RotatePlayerBodyByDgree(0, speed);
-       // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), speed * Time.deltaTime);
+      
     }
 
     // reset any object rotaion 
@@ -42,6 +45,8 @@ public class Rotation : MonoBehaviour
             yield return null;
         }
         transform.rotation = targetRotation;
+      
     }
-
+  
+   
 }

@@ -1,54 +1,61 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldControl : MonoBehaviour
 {
-  
-   
+
+
     PlayerControl player;
     Rotation rotation;
-    Movement movement;
-
-   
+    GameObject platform;
+    float timebetweenFlip;
+    [SerializeField] float FlipTimer = 1;
     private void Awake()
     {
         player = FindObjectOfType<PlayerControl>();
         rotation = GetComponent<Rotation>();
-        movement = FindObjectOfType < Movement >();
+        platform = GameObject.Find("platform");
+
+        timebetweenFlip = FlipTimer;
     }
-   
+
 
     // Update is called once per frame
     void Update()
     {
-      
+        if (!TimeToFlip()) return;
+
         if (Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(rotation.RotateTheWorld(-1));
-            StartCoroutine(FlipGameStyle());
-           
+            StartCoroutine(SetThePlayerAsCenter(-1));
+            
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
-            StartCoroutine(rotation.RotateTheWorld(1));
-          StartCoroutine(FlipGameStyle());
-           
+            StartCoroutine(SetThePlayerAsCenter(1));
+            
         }
     }
 
-
-
-    // flip the game world gravity and control of movement
-    IEnumerator FlipGameStyle() 
+    bool TimeToFlip()
     {
-        player.FlipTheGravity();
-        yield return new WaitForSeconds(.5f);
-        movement.FlipMovement();
+        timebetweenFlip -= Time.deltaTime;
+        if (timebetweenFlip < 0)
+        {
+          return true;
+        }
+        return false;
     }
 
-   
-  
+    IEnumerator SetThePlayerAsCenter(int dir)
+    {
+
+        transform.position = player.transform.position + new Vector3(0, 2, 0);
+        platform.transform.SetParent(transform);
+        yield return StartCoroutine(rotation.RotateTheWorld(dir));
+        platform.transform.SetParent(null);
+        timebetweenFlip = FlipTimer;
+    }
 
    
 }

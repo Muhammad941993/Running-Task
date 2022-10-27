@@ -18,6 +18,7 @@ public class PlayerControl : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
        movement.HorizontalMovement(x , PlayerSpeed);
 
+        
     }
 
     // flip the gravity in the game
@@ -29,5 +30,9 @@ public class PlayerControl : MonoBehaviour
         // flip gravity
         Physics.gravity *= -1;
     }
+
+
+
+
 
 }
