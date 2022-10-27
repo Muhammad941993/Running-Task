@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6873564882554195654}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,3 +115,4 @@ MonoBehaviour:
   - {r: 0.16862746, g: 0.69803923, b: 0.31028393, a: 0}
   - {r: 0.74509805, g: 0.52949256, b: 0.16470586, a: 0}
   - {r: 0.19003202, g: 0.46524557, b: 0.6415094, a: 0}
+  Speed: 10

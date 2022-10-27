@@ -3,13 +3,9 @@ using System.Collections;
 
 public class Rotation : MonoBehaviour
 {
-    float lerpDuration = .5f;
+    float lerpDuration = .4f;
     //GameObject player;
    
-    public int flipNumber = 0;
-   
-  
-    
     public void RotatePlayerBodyByDgree(float Dgree , float rotationSpeed)
     {
         Quaternion target = Quaternion.Euler(0, 0, Dgree);

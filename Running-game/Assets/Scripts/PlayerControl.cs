@@ -1,38 +1,45 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField] float PlayerSpeed = 10;
     Movement movement;
-    float CurrentScaleY = 1;
-   
-    
+    Health health;
+    Animator anim;
     void Awake()
     {
+        health = GetComponent<Health>();
         movement = GetComponent<Movement>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (health.IfIsDead()) return;
+
         float x = Input.GetAxis("Horizontal");
        movement.HorizontalMovement(x , PlayerSpeed);
 
-        
+        if (movement.FallingAway())
+        {
+            health.DecreseHealth(1);
+            
+        }
+
     }
 
-    // flip the gravity in the game
-    public void FlipTheGravity()
+
+    private void OnCollisionEnter(Collision collision)
     {
-        // flip the player scale with gravity
-        transform.localScale = new Vector3(1, CurrentScaleY *= -1 , 1);
-
-        // flip gravity
-        Physics.gravity *= -1;
+        if (collision.transform.CompareTag("Enemy"))
+        {
+            health.DecreseHealth(1);
+        }
     }
 
-
-
+   
 
 
 }

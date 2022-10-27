@@ -10,8 +10,10 @@ public class WorldControl : MonoBehaviour
     GameObject platform;
     float timebetweenFlip;
     [SerializeField] float FlipTimer = 1;
+   
     private void Awake()
     {
+       
         player = FindObjectOfType<PlayerControl>();
         rotation = GetComponent<Rotation>();
         platform = GameObject.Find("platform");
@@ -37,6 +39,7 @@ public class WorldControl : MonoBehaviour
         }
     }
 
+    // reset the time to start flip again
     bool TimeToFlip()
     {
         timebetweenFlip -= Time.deltaTime;
@@ -47,15 +50,17 @@ public class WorldControl : MonoBehaviour
         return false;
     }
 
+    // set the player the center of rotation
     IEnumerator SetThePlayerAsCenter(int dir)
     {
 
-        transform.position = player.transform.position + new Vector3(0, 2, 0);
+        transform.position = player.transform.position;
         platform.transform.SetParent(transform);
         yield return StartCoroutine(rotation.RotateTheWorld(dir));
         platform.transform.SetParent(null);
         timebetweenFlip = FlipTimer;
     }
 
-   
+  
+
 }
