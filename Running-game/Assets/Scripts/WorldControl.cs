@@ -10,10 +10,12 @@ public class WorldControl : MonoBehaviour
     GameObject platform;
     float timebetweenFlip;
     [SerializeField] float FlipTimer = 1;
-   
+    Vector3 QoffsetDistance;
+    Vector3 EoffsetDistance;
     private void Awake()
     {
-       
+        QoffsetDistance = new Vector3(2, -2, 0);
+        EoffsetDistance = new Vector3(-2, -2, 0);
         player = FindObjectOfType<PlayerControl>();
         rotation = GetComponent<Rotation>();
         platform = GameObject.Find("platform");
@@ -29,17 +31,16 @@ public class WorldControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(SetThePlayerAsCenter(-1));
+            StartCoroutine(SetThePlayerAsCenter(-1 , EoffsetDistance));
             
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
-            StartCoroutine(SetThePlayerAsCenter(1));
+            StartCoroutine(SetThePlayerAsCenter(1 , QoffsetDistance));
             
         }
     }
 
-    // reset the time to start flip again
     bool TimeToFlip()
     {
         timebetweenFlip -= Time.deltaTime;
@@ -50,11 +51,10 @@ public class WorldControl : MonoBehaviour
         return false;
     }
 
-    // set the player the center of rotation
-    IEnumerator SetThePlayerAsCenter(int dir)
+    IEnumerator SetThePlayerAsCenter(int dir , Vector3 offset)
     {
 
-        transform.position = player.transform.position;
+        transform.position = player.transform.position + offset;
         platform.transform.SetParent(transform);
         yield return StartCoroutine(rotation.RotateTheWorld(dir));
         platform.transform.SetParent(null);
